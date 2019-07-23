@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ASYNC JS</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<link rel="stylesheet" href="./style.css">
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var count = 0;
+
+			// handle click and add class
+			document.querySelector('button').addEventListener('click', function() {
+				var interval;
+				var thisRequest = count;
+
+				$('#log').append('<li>Request ' + thisRequest + ': starting AJAX request</li>');
+
+				$.ajax({
+					// this URL will respond after at least 1 second
+					url: 'https://httpbin.org/delay/1',
+					success: function(response) {
+						$('#log').append('<li>Request ' + thisRequest + ': got response.</li>');
+
+						clearInterval(interval);
+					}
+				});
+
+				$('#log').append('<li>Request ' + thisRequest + ': AJAX request started ...</li>');
+
+				interval = setInterval(function() {
+					$('#log').append('<li>Request ' + thisRequest + ': ... still working ...</li>');
+				}, 100);
+
+				count++;
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="banner-message">
+		<button>Send Request</button>
+
+		<ol id="log">
+
+		</ol>
+	</div>
+</body>
+</html>
